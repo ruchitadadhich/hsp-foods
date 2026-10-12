@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useStore } from "./useStore";
+import Loading from "./components/Loading";
 
 const KEY = "hsp_admin_token";
 const getTok = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
@@ -35,13 +36,16 @@ function Login({ onIn }) {
     setBusy(false);
   };
   return (
-    <div className="wrap admin">
-      <form className="panel" onSubmit={go} style={{ maxWidth: 420, margin: "60px auto" }}>
-        <h2>Admin login</h2>
-        <label htmlFor="p">Password</label>
-        <input id="p" type="password" value={p} onChange={(x) => setP(x.target.value)} autoComplete="current-password" />
-        {err && <p className="note" style={{ color: "#a33" }}>{err}</p>}
-        <button className="btn" type="submit" disabled={busy} style={{ width: "100%" }}>{busy ? "Checking..." : "Log in"}</button>
+    <div className="login-screen">
+      <form className="panel login-panel" onSubmit={go}>
+        <div className="login-brand" aria-hidden="true">HSP <span>FOODS</span></div>
+        <p className="login-kicker">STORE MANAGEMENT</p>
+        <h1>Welcome back</h1>
+        <p className="login-copy">Sign in to manage your products and orders.</p>
+        <label htmlFor="p">Admin password</label>
+        <input className="login-input" id="p" type="password" value={p} onChange={(x) => setP(x.target.value)} autoComplete="current-password" required />
+        {err && <p className="login-error" role="alert">{err}</p>}
+        <button className="btn login-submit" type="submit" disabled={busy}>{busy ? <><span className="button-spinner" aria-hidden="true" /> Signing in...</> : "Sign in"}</button>
       </form>
     </div>
   );
@@ -136,6 +140,6 @@ function Editor({ initial, token, onOut }) {
 export default function Admin() {
   const [token, setToken] = useState(getTok());
   const { cfg, ready } = useStore();
-  if (!ready) return null;
+  if (!ready) return <Loading />;
   return token ? <Editor initial={cfg} token={token} onOut={() => setToken(null)} /> : <Login onIn={setToken} />;
 }

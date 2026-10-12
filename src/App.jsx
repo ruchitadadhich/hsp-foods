@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { useStore } from "./useStore";
 import Bowl from "./components/Bowl";
 import OrderSection from "./components/OrderSection";
+import Loading from "./components/Loading";
 
 const Admin = lazy(() => import("./Admin.jsx"));
 
@@ -22,8 +23,8 @@ export default function App() {
   const { cfg, ready } = useStore();
 
   if (hash.startsWith("#/admin"))
-    return <Suspense fallback={null}><Admin /></Suspense>;
-  if (!ready) return null;
+    return <Suspense fallback={<Loading />}><Admin /></Suspense>;
+  if (!ready) return <Loading />;
 
   const ask = `https://wa.me/${cfg.whatsapp}?text=${encodeURIComponent("Hi! I have a question about your makhana.")}`;
   return (
