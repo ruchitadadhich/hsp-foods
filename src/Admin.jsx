@@ -38,7 +38,7 @@ function Login({ onIn }) {
   return (
     <div className="login-screen">
       <form className="panel login-panel" onSubmit={go}>
-        <div className="login-brand" aria-hidden="true">HSP <span>FOODS</span></div>
+        <img className="brand-logo login-brand-image" src="/hsp-logo-green.png" alt="HSP Makhana" />
         <p className="login-kicker">STORE MANAGEMENT</p>
         <h1>Welcome back</h1>
         <p className="login-copy">Sign in to manage your products and orders.</p>
@@ -78,7 +78,7 @@ function Editor({ initial, token, onOut }) {
   return (
     <div className="wrap admin">
       <header>
-        <div className="logo">HSP<small>ADMIN</small></div>
+        <div className="admin-brand"><img className="brand-logo admin-logo" src="/hsp-logo-green.png" alt="HSP Makhana" /><span>ADMIN</span></div>
         <div style={{ display: "flex", gap: 10 }}>
           <a className="hdr-btn" href="#/">View website</a>
           <button className="hdr-btn" style={{ background: "none", cursor: "pointer" }} onClick={() => { setTok(null); onOut(); }}>Log out</button>

@@ -64,8 +64,13 @@ footer a{color:inherit}
 
 .login-screen{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#fff9ee 0%,var(--bg) 68%)}
 .login-panel{width:min(100%,440px);padding:36px 40px;border-radius:22px;box-shadow:0 18px 55px rgba(58,45,36,.08)}
-.login-brand{font:700 27px/1 'Cormorant Garamond',Georgia,serif;color:var(--gold);letter-spacing:1px}
-.login-brand span{color:var(--olive);font:700 10px 'Nunito Sans',sans-serif;letter-spacing:3px;margin-left:4px}
+.brand-logo{display:block;object-fit:contain;flex:none}
+.header-logo{width:64px;height:60px}
+.footer-logo{width:120px;height:110px;margin-bottom:12px}
+.admin-brand{display:flex;align-items:center;gap:12px}
+.admin-logo{width:58px;height:54px}
+.admin-brand span{padding-left:12px;border-left:1px solid var(--line);color:var(--olive);font:700 10px 'Nunito Sans',sans-serif;letter-spacing:2px}
+.login-brand-image{width:92px;height:84px;margin-bottom:18px}
 .login-kicker{margin:26px 0 6px;color:var(--olive);font-size:11px;font-weight:700;letter-spacing:1.5px}
 .login-panel h1{font-size:38px;font-weight:600}
 .login-copy{margin:7px 0 26px;color:rgba(58,45,36,.72);font-size:14px}

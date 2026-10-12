@@ -32,7 +32,7 @@ export default function App() {
       {cfg.offer?.enabled && cfg.offer.text && <div className="offer-bar">{cfg.offer.text}</div>}
       <div className="wrap">
         <header>
-          <div className="logo">HSP<small>FOODS</small></div>
+          <img className="brand-logo header-logo" src="/hsp-logo-green.png" alt="HSP Makhana" />
           <a className="hdr-btn" href="#order">Order now</a>
         </header>
 
@@ -70,7 +70,7 @@ export default function App() {
 
       <footer>
         <div className="wrap">
-          <h2 style={{ fontSize: 36 }}>{cfg.brand}</h2>
+          <img className="brand-logo footer-logo" src="/hsp-logo-green.png" alt={cfg.brand} />
           <p>Goodness of nature, delivered to you.</p>
           <div className="contact">
             <span>{cfg.location}</span>
