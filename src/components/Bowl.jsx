@@ -1,6 +1,6 @@
 export default function Bowl({ cfg }) {
   return (
-    <div className="bowl" role="img" aria-label="Bowl of makhana">
+    <div className={cfg.image ? "bowl product-bowl" : "bowl"} role="img" aria-label="Bowl of makhana">
       {cfg.image ? (
         <img className="product-img" src={cfg.image} alt={cfg.productName} />
       ) : (

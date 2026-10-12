@@ -7,7 +7,7 @@ export const CONFIG = {
   location: "Chandigarh",
   productName: "Premium Makhana",
   tagline: "Roasted fox nuts, lightly salted",
-  image: "", // e.g. "/makhana.jpg" (put the file in /public). Empty = illustration
+  image: "/Makhana.png",
   freeShippingAbove: 0, // 0 = no free delivery offer
   shippingNote: "Shipping charges extra. Delivery all over India.",
   variants: [

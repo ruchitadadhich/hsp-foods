@@ -12,7 +12,7 @@ export function useStore() {
     const t = setTimeout(() => ctl.abort(), 4000);
     fetch("/api/store", { signal: ctl.signal })
       .then((r) => (r.ok ? r.json() : {}))
-      .then((d) => { if (d && d.productName) setCfg({ ...DEFAULTS, ...d }); })
+      .then((d) => { if (d && d.productName) setCfg({ ...DEFAULTS, ...d, image: d.image || DEFAULTS.image }); })
       .catch(() => {})
       .finally(() => { clearTimeout(t); setReady(true); });
     return () => { clearTimeout(t); ctl.abort(); };
