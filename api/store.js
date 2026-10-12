@@ -46,6 +46,7 @@ export default async function handler(req, res) {
     }
     res.status(405).end();
   } catch (e) {
+    console.error("store api error:", e);
     res.status(500).json({ error: e.message === "setup" ? "setup" : "server" });
   }
 }

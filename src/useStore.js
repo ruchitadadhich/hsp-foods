@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db, configured } from "./firebase";
 import { CONFIG } from "./config";
 
 export const DEFAULTS = { ...CONFIG, offer: { enabled: false, text: "", percent: 0 } };
 
-// Live store data. Admin changes show up on the website instantly.
+// Loads store data from our own API. If API/database is not set up, defaults from config.js are used.
 export function useStore() {
   const [cfg, setCfg] = useState(DEFAULTS);
-  const [ready, setReady] = useState(!configured);
+  const [ready, setReady] = useState(false);
   useEffect(() => {
-    if (!configured) return;
-    const t = setTimeout(() => setReady(true), 3000);
-    const off = onSnapshot(
-      doc(db, "store", "main"),
-      (s) => {
-        if (s.exists()) setCfg({ ...DEFAULTS, ...s.data() });
-        setReady(true);
-      },
-      () => setReady(true)
-    );
-    return () => { clearTimeout(t); off(); };
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), 4000);
+    fetch("/api/store", { signal: ctl.signal })
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((d) => { if (d && d.productName) setCfg({ ...DEFAULTS, ...d }); })
+      .catch(() => {})
+      .finally(() => { clearTimeout(t); setReady(true); });
+    return () => { clearTimeout(t); ctl.abort(); };
   }, []);
   return { cfg, ready };
 }

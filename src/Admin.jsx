@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db, configured } from "./firebase";
 import { useStore } from "./useStore";
+
+const KEY = "hsp_admin_token";
+const getTok = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
+const setTok = (t) => { try { t ? localStorage.setItem(KEY, t) : localStorage.removeItem(KEY); } catch {} };
 
 // Resize photo to ~900px JPEG so it fits in the database (no paid storage needed)
 function compress(file) {
@@ -20,29 +21,33 @@ function compress(file) {
   });
 }
 
-function Login() {
-  const [e, setE] = useState(""); const [p, setP] = useState(""); const [err, setErr] = useState("");
+function Login({ onIn }) {
+  const [p, setP] = useState(""); const [err, setErr] = useState(""); const [busy, setBusy] = useState(false);
   const go = async (ev) => {
-    ev.preventDefault(); setErr("");
-    try { await signInWithEmailAndPassword(auth, e, p); }
-    catch { setErr("Wrong email or password."); }
+    ev.preventDefault(); setErr(""); setBusy(true);
+    try {
+      const r = await fetch("/api/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: p }) });
+      const d = await r.json().catch(() => ({}));
+      if (r.ok) { setTok(d.token); onIn(d.token); }
+      else if (d.error === "setup") setErr("Server is not set up yet. Add ADMIN_PASSWORD and JWT_SECRET in Vercel, then redeploy.");
+      else setErr("Wrong password.");
+    } catch { setErr("Could not reach the server. Try again."); }
+    setBusy(false);
   };
   return (
     <div className="wrap admin">
       <form className="panel" onSubmit={go} style={{ maxWidth: 420, margin: "60px auto" }}>
         <h2>Admin login</h2>
-        <label htmlFor="e">Email</label>
-        <input id="e" type="text" value={e} onChange={(x) => setE(x.target.value)} autoComplete="username" />
         <label htmlFor="p">Password</label>
         <input id="p" type="password" value={p} onChange={(x) => setP(x.target.value)} autoComplete="current-password" />
         {err && <p className="note" style={{ color: "#a33" }}>{err}</p>}
-        <button className="btn" type="submit" style={{ width: "100%" }}>Log in</button>
+        <button className="btn" type="submit" disabled={busy} style={{ width: "100%" }}>{busy ? "Checking..." : "Log in"}</button>
       </form>
     </div>
   );
 }
 
-function Editor({ initial }) {
+function Editor({ initial, token, onOut }) {
   const [f, setF] = useState(initial);
   const [msg, setMsg] = useState("");
   const up = (k) => (e) => setF({ ...f, [k]: e.target.value });
@@ -58,9 +63,12 @@ function Editor({ initial }) {
         variants: f.variants.map((v) => ({ label: v.label, price: Number(v.price) || 0, mrp: Number(v.mrp) || 0 })),
         offer: { enabled: !!f.offer.enabled, text: f.offer.text || "", percent: Number(f.offer.percent) || 0 },
       };
-      await setDoc(doc(db, "store", "main"), data);
+      const r = await fetch("/api/store", { method: "PUT", headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: JSON.stringify(data) });
+      if (r.status === 401) { setTok(null); onOut(); return; }
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) { setMsg(d.error === "setup" ? "Database is not connected yet (MONGODB_URI)." : d.error || "Could not save."); return; }
       setMsg("Saved. The website is updated.");
-    } catch { setMsg("Could not save. Check you are logged in with the admin email."); }
+    } catch { setMsg("Could not save. Check your internet and try again."); }
   };
 
   return (
@@ -69,7 +77,7 @@ function Editor({ initial }) {
         <div className="logo">HSP<small>ADMIN</small></div>
         <div style={{ display: "flex", gap: 10 }}>
           <a className="hdr-btn" href="#/">View website</a>
-          <button className="hdr-btn" style={{ background: "none", cursor: "pointer" }} onClick={() => signOut(auth)}>Log out</button>
+          <button className="hdr-btn" style={{ background: "none", cursor: "pointer" }} onClick={() => { setTok(null); onOut(); }}>Log out</button>
         </div>
       </header>
 
@@ -126,15 +134,8 @@ function Editor({ initial }) {
 }
 
 export default function Admin() {
-  const [user, setUser] = useState(undefined);
+  const [token, setToken] = useState(getTok());
   const { cfg, ready } = useStore();
-  useEffect(() => (configured ? onAuthStateChanged(auth, setUser) : undefined), []);
-
-  if (!configured)
-    return <div className="wrap admin"><div className="panel" style={{ margin: "60px auto", maxWidth: 560 }}>
-      <h2>Admin not set up yet</h2>
-      <p>Firebase keys are missing. Follow the steps in README.md (section "Admin panel setup"), then reload.</p>
-    </div></div>;
-  if (user === undefined || !ready) return null;
-  return user ? <Editor initial={cfg} /> : <Login />;
+  if (!ready) return null;
+  return token ? <Editor initial={cfg} token={token} onOut={() => setToken(null)} /> : <Login onIn={setToken} />;
 }
