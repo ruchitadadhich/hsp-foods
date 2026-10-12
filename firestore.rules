@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /store/main {
+      allow read: if true;
+      // CHANGE to the client's admin email
+      allow write: if request.auth != null
+                   && request.auth.token.email == "ADMIN_EMAIL_HERE";
+    }
+  }
+}

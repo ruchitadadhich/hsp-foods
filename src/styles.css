@@ -1,0 +1,63 @@
+:root{--bg:#fbf3e4;--card:#fff9ee;--ink:#3a2d24;--olive:#5f6f2f;--gold:#b89445;--line:#e6d9bd;--onolive:#fff9ee;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Nunito Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;line-height:1.1;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--gold);letter-spacing:2px}
+.logo small{display:block;font:600 10px 'Nunito Sans';letter-spacing:5px;color:var(--olive);margin-top:-4px}
+.hdr-btn{color:var(--olive);font-weight:700;text-decoration:none;border:1.5px solid var(--olive);padding:8px 16px;border-radius:99px}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:36px 0 56px}
+.hero h1{font-size:clamp(40px,6vw,68px);font-weight:600}
+.hero p{max-width:46ch;font-size:18px}
+.badges{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0;font-weight:700;font-size:14px;color:var(--olive)}
+.badges span{border:1.5px solid var(--olive);padding:6px 14px;border-radius:99px}
+.bowl{aspect-ratio:1;border-radius:50% 50% 46% 54%;background:radial-gradient(circle at 40% 35%,#f6ecd2,#dcc690);display:grid;place-items:center;position:relative;box-shadow:0 20px 50px rgba(90,70,20,.18)}
+.bowl svg{width:78%;height:auto}
+.btn{display:inline-block;background:var(--olive);color:var(--onolive);border:0;font:700 16px 'Nunito Sans';padding:15px 28px;border-radius:99px;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.1)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+section{padding:56px 0;border-top:1px solid var(--line)}
+section h2{font-size:clamp(32px,4.5vw,46px);margin-bottom:12px}
+.order{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px}
+.sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 22px}
+.sizes button{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:12px 6px;font:600 15px 'Nunito Sans';cursor:pointer}
+.sizes button b{display:block;font-size:18px}
+.sizes button[aria-pressed="true"]{border-color:var(--olive);background:var(--olive);color:var(--onolive)}
+.qty{display:flex;align-items:center;gap:16px;margin:12px 0 22px}
+.qty button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--olive);background:transparent;color:var(--olive);font-size:22px;cursor:pointer}
+.qty output{min-width:30px;text-align:center;font-size:22px;font-weight:700}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--line);padding-top:16px;margin-bottom:18px}
+.total strong{font:700 36px 'Cormorant Garamond',serif;color:var(--olive)}
+.note{font-size:13px;opacity:.75;margin-top:10px}
+label{font-weight:700;font-size:14px}
+input[type=text],input[type=tel],textarea{width:100%;margin:6px 0 14px;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+ul.benefits{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:12px}
+ul.benefits li{padding-left:26px;position:relative}
+ul.benefits li::before{content:"";position:absolute;left:0;top:9px;width:12px;height:12px;border-radius:50% 0;background:var(--olive)}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
+.why div{padding-top:14px;border-top:2px solid var(--gold)}
+.why h3{font-size:26px;margin-bottom:6px}
+details{border-bottom:1px solid var(--line);padding:14px 0}
+summary{font-weight:700;cursor:pointer}
+footer{background:var(--olive);color:var(--onolive);padding:40px 0 90px}
+footer a{color:inherit}
+.contact{display:flex;gap:28px;flex-wrap:wrap;margin-top:12px}
+.float{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--olive);color:var(--onolive);font-weight:700;text-decoration:none;padding:13px 20px;border-radius:99px;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:5}
+@media(max-width:760px){.hero,.order,.why{grid-template-columns:1fr}.bowl{max-width:340px;margin:auto}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.product-img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+
+.offer-bar{background:var(--gold);color:#fff9ee;text-align:center;font-weight:700;padding:10px 16px;font-size:15px}
+.mrp{display:block;font-weight:400;font-size:13px;opacity:.7}
+.total .mrp{display:inline;margin-right:8px;font:400 18px 'Nunito Sans'}
+.admin h3{font-size:28px;margin-bottom:10px}
+.adm{margin-bottom:18px}
+.vrow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end}
+.link{background:none;border:0;color:var(--olive);font:700 14px 'Nunito Sans';cursor:pointer;padding:8px 0;text-decoration:underline}
+.chk{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.chk input{width:auto;margin:0}
+.hdr-btn{background:none;font-family:inherit;font-size:inherit}
+@media(max-width:760px){.vrow{grid-template-columns:1fr 1fr}}
